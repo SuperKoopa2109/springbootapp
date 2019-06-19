@@ -42,7 +42,7 @@ pipeline {
         stage ('Delivery on VM'){
             steps{
                 script{
-			sh 'gradle build docker'
+			sh './gradlew build docker'
                 }
             }
         }
