@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     stages {
-        stage ('Unit & Integration Tests') {
+        stage ('Unit Tests') {
 	    steps {
                 script {
                     try {
