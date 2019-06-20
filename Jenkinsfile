@@ -62,7 +62,7 @@ pipeline {
     }
     post {
         always {
-            echo 'Post'
+            echo '***Post***'
         }
     }
 }
