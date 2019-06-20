@@ -4,9 +4,10 @@ pipeline {
 
     stages {
         stage ('Unit & Integration Tests') {
-            steps {
+	    steps {
                 script {
                     try {
+			echo '***Testing the application***'
                         sh './gradlew clean build test jacocoTestReport --no-daemon'
                     } finally {
                         junit 'build/test-results/test/*.xml'
@@ -21,6 +22,7 @@ pipeline {
         stage ('Publish Reports') {
             steps {
                 script {
+		    echo '***publishing reports***'
                     unstash name: 'reports'
 
                     publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'build/reports/tests/test', reportFiles: 'index.html', reportName: 'Unit Test Report', reportTitles: ''])
@@ -31,6 +33,8 @@ pipeline {
         stage ('Archive Artifacts') {
             steps {
                 script {
+		    echo '***Archiving Artifacts***'
+			
                     unstash name: 'distributions'
                     unstash name: 'libs'
 
@@ -39,13 +43,22 @@ pipeline {
                 }
             }
         }
-        stage ('Delivery on VM'){
+        stage ('Delivery'){
             steps{
                 script{
+			echo '***Application is being delivered to the machine***'
 			sh './gradlew build docker'
                 }
             }
         }
+	    stage ('Deployment'){
+		    steps{
+			    script{
+				    echo '***Application is being deployed on the machine***'
+				    sh 'docker run -p 9001:9011 mbition/spring-boot-app'
+			    }
+		    }
+	    }
     }
     post {
         always {
