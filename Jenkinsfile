@@ -55,7 +55,7 @@ pipeline {
 		    steps{
 			    script{
 				    echo '***Application is being deployed on the machine***'
-				    sh 'docker run -p 9001:9011 mbition/spring-boot-app'
+				    /*sh 'docker run -p 9001:9011 mbition/spring-boot-app'*/
 			    }
 		    }
 	    }
